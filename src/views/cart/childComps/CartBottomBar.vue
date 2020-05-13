@@ -10,19 +10,29 @@
     <div class="cart-price">
       合计:￥{{totalPrice}}
     </div>
-    <div class="calculate">
+    <div class="calculate" @click="calClick">
       去结算:{{checkedLength}}
     </div>
+    <toast :message="message" :is-show="show"/>
   </div>
 </template>
 
 <script>
   import CheckButton from 'components/common/checkbutton/CheckButton'
+  import Toast from 'components/common/toast/Toast'
   import {mapGetters} from 'vuex'
   export default {
     name: "CartBottomBar",
+    data(){
+      return{
+        //记录弹窗的显示状态以及文字
+        message:'',
+        show:false,
+      }
+    },
     components:{
       CheckButton,
+      Toast,
     },
     computed:{
       ...mapGetters(['cartList']),
@@ -54,8 +64,19 @@
           //全部没选中或者部分选中时，点击使之全部选中
           this.cartList.forEach(item => item.checked = true)
         }
+      },
+      //弹窗点击设置
+      calClick(){
+        if(!this.isSelectAll){
+          this.show = true;
+          this.message = "请添加商品到购物车";
+          setTimeout(() => {
+            this.show = false;
+            this.message = '';
+          },1500)
+        }
       }
-    }
+    },
   }
 </script>
 

@@ -13,6 +13,7 @@
       <goods-list ref="recommend" :goods="recommend"/>
     </scroll>
     <detail-bottom-bar @addCart="addToCart"/>
+    <toast :message="message" :is-show="show"/>
   </div>
 </template>
 
@@ -26,6 +27,7 @@
   import DetailCommentInfo from './childComps/DetailCommentInfo'
   import GoodsList from 'components/content/goods/GoodsList'
   import DetailBottomBar from './childComps/DetailBottomBar'
+  import Toast from 'components/common/toast/Toast'
 
 
   import Scroll from 'components/common/scroll/Scroll'
@@ -47,6 +49,7 @@
       DetailCommentInfo,
       GoodsList,
       DetailBottomBar,
+      Toast,
       Scroll,
     },
     mixins:[itemListenerMixin],//混入
@@ -63,6 +66,9 @@
         themeTopYs:[],
         getThemeTopYs:null,
         currentIndex:0,//记录当前themeTopYs的遍历的i值
+        //记录弹窗的显示状态以及文字
+        message:'',
+        show:false,
       }
     },
     created() {
@@ -72,7 +78,7 @@
       getDetail(this.iid).then(res => {
         const data = res.data.result;
         //轮播图数据
-        this.topImages = data.itemInfo.topImages;
+        this.topImages = data.itemInfo.topImages; 
         //商品基本数据信息
         this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services);
         //商家店铺信息获取
@@ -141,11 +147,17 @@
         product.price = this.goods.realPrice;
         product.iid = this.iid;
         //2.将商品添加到购物车里面 vuex管理
-        this.$store.dispatch('addCart',product);
+        /*this.$store.dispatch('addCart',product);*/
         //或者使用actions可以返回promise 并且映射关系mapActions 来添加
-        /*this.addCart(product).then(res => {
-          console.log(res);
-        })*/
+        this.addCart(product).then(res => {
+          //弹窗状态更改
+          this.show = true;
+          this.message = res;
+          setTimeout(() => {
+            this.show = false;
+            this.message = '';
+          },1500)
+        })
       }
     },
   }
