@@ -6,12 +6,12 @@
                   @selectItem="selectItem"/>
         <scroll id="tab-content"  :data="[categoryData]">
           <div>
-            <tab-content-category :subcategories="showSubcategory"></tab-content-category>
+            <tab-content-category :subcategories="showSubcategory"/>
             <tab-control :titles="['综合', '新品', '销量']"
-                         @itemClick="tabClick"></tab-control>
-            <tab-content-detail :category-detail="showCategoryDetail"></tab-content-detail>
+                         @itemClick="tabClick"/>
+            <tab-content-detail :category-detail="showCategoryDetail"/>
           </div>
-        </scroll>>
+        </scroll>
       </div>
   </div>
 </template>
@@ -45,12 +45,12 @@
     },
     computed: {
       showSubcategory() {
-        if (this.currentIndex === -1) return {}
-        return this.categoryData[this.currentIndex].subcategories
+        if (this.currentIndex === -1) return {};
+        return this.categoryData[this.currentIndex].subcategories;
       },
       showCategoryDetail() {
-        if (this.currentIndex === -1) return []
-        return this.categoryData[this.currentIndex].categoryDetail[this.currentType]
+        if (this.currentIndex === -1) return [];
+        return this.categoryData[this.currentIndex].categoryDetail[this.currentType];
       }
     },
     created() {
@@ -124,7 +124,7 @@
 
   .nav-bar {
     background-color: var(--color-tint);
-    font-weight: 700;
+    font-size: 14px;
     color: #fff;
   }
 
